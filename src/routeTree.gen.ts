@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AppDiscoverRouteImport } from './routes/_app.discover'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
 import { Route as AppCallsRouteImport } from './routes/_app.calls'
 import { Route as AppCallsIdRouteImport } from './routes/_app.calls.$id'
@@ -23,6 +24,11 @@ const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AppDiscoverRoute = AppDiscoverRouteImport.update({
+  id: '/discover',
+  path: '/discover',
+  getParentRoute: () => AppRoute,
 } as any)
 const AppDashboardRoute = AppDashboardRouteImport.update({
   id: '/dashboard',
@@ -44,12 +50,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/calls': typeof AppCallsRouteWithChildren
   '/dashboard': typeof AppDashboardRoute
+  '/discover': typeof AppDiscoverRoute
   '/calls/$id': typeof AppCallsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/calls': typeof AppCallsRouteWithChildren
   '/dashboard': typeof AppDashboardRoute
+  '/discover': typeof AppDiscoverRoute
   '/calls/$id': typeof AppCallsIdRoute
 }
 export interface FileRoutesById {
@@ -58,19 +66,21 @@ export interface FileRoutesById {
   '/_app': typeof AppRouteWithChildren
   '/_app/calls': typeof AppCallsRouteWithChildren
   '/_app/dashboard': typeof AppDashboardRoute
+  '/_app/discover': typeof AppDiscoverRoute
   '/_app/calls/$id': typeof AppCallsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/calls' | '/dashboard' | '/calls/$id'
+  fullPaths: '/' | '/calls' | '/dashboard' | '/discover' | '/calls/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/calls' | '/dashboard' | '/calls/$id'
+  to: '/' | '/calls' | '/dashboard' | '/discover' | '/calls/$id'
   id:
     | '__root__'
     | '/'
     | '/_app'
     | '/_app/calls'
     | '/_app/dashboard'
+    | '/_app/discover'
     | '/_app/calls/$id'
   fileRoutesById: FileRoutesById
 }
@@ -94,6 +104,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_app/discover': {
+      id: '/_app/discover'
+      path: '/discover'
+      fullPath: '/discover'
+      preLoaderRoute: typeof AppDiscoverRouteImport
+      parentRoute: typeof AppRoute
     }
     '/_app/dashboard': {
       id: '/_app/dashboard'
@@ -134,11 +151,13 @@ const AppCallsRouteWithChildren = AppCallsRoute._addFileChildren(
 interface AppRouteChildren {
   AppCallsRoute: typeof AppCallsRouteWithChildren
   AppDashboardRoute: typeof AppDashboardRoute
+  AppDiscoverRoute: typeof AppDiscoverRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppCallsRoute: AppCallsRouteWithChildren,
   AppDashboardRoute: AppDashboardRoute,
+  AppDiscoverRoute: AppDiscoverRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
