@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRouteImport } from './routes/_app'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AppTrackingRouteImport } from './routes/_app.tracking'
+import { Route as AppReportsRouteImport } from './routes/_app.reports'
 import { Route as AppFollowupsRouteImport } from './routes/_app.followups'
 import { Route as AppDiscoverRouteImport } from './routes/_app.discover'
 import { Route as AppDashboardRouteImport } from './routes/_app.dashboard'
@@ -31,6 +32,11 @@ const IndexRoute = IndexRouteImport.update({
 const AppTrackingRoute = AppTrackingRouteImport.update({
   id: '/tracking',
   path: '/tracking',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppReportsRoute = AppReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
   getParentRoute: () => AppRoute,
 } as any)
 const AppFollowupsRoute = AppFollowupsRouteImport.update({
@@ -71,6 +77,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AppDashboardRoute
   '/discover': typeof AppDiscoverRoute
   '/followups': typeof AppFollowupsRoute
+  '/reports': typeof AppReportsRoute
   '/tracking': typeof AppTrackingRoute
   '/calls/$id': typeof AppCallsIdRoute
 }
@@ -81,6 +88,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AppDashboardRoute
   '/discover': typeof AppDiscoverRoute
   '/followups': typeof AppFollowupsRoute
+  '/reports': typeof AppReportsRoute
   '/tracking': typeof AppTrackingRoute
   '/calls/$id': typeof AppCallsIdRoute
 }
@@ -93,6 +101,7 @@ export interface FileRoutesById {
   '/_app/dashboard': typeof AppDashboardRoute
   '/_app/discover': typeof AppDiscoverRoute
   '/_app/followups': typeof AppFollowupsRoute
+  '/_app/reports': typeof AppReportsRoute
   '/_app/tracking': typeof AppTrackingRoute
   '/_app/calls/$id': typeof AppCallsIdRoute
 }
@@ -105,6 +114,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/discover'
     | '/followups'
+    | '/reports'
     | '/tracking'
     | '/calls/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -115,6 +125,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/discover'
     | '/followups'
+    | '/reports'
     | '/tracking'
     | '/calls/$id'
   id:
@@ -126,6 +137,7 @@ export interface FileRouteTypes {
     | '/_app/dashboard'
     | '/_app/discover'
     | '/_app/followups'
+    | '/_app/reports'
     | '/_app/tracking'
     | '/_app/calls/$id'
   fileRoutesById: FileRoutesById
@@ -156,6 +168,13 @@ declare module '@tanstack/react-router' {
       path: '/tracking'
       fullPath: '/tracking'
       preLoaderRoute: typeof AppTrackingRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/reports': {
+      id: '/_app/reports'
+      path: '/reports'
+      fullPath: '/reports'
+      preLoaderRoute: typeof AppReportsRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/followups': {
@@ -221,6 +240,7 @@ interface AppRouteChildren {
   AppDashboardRoute: typeof AppDashboardRoute
   AppDiscoverRoute: typeof AppDiscoverRoute
   AppFollowupsRoute: typeof AppFollowupsRoute
+  AppReportsRoute: typeof AppReportsRoute
   AppTrackingRoute: typeof AppTrackingRoute
 }
 
@@ -230,6 +250,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppDashboardRoute: AppDashboardRoute,
   AppDiscoverRoute: AppDiscoverRoute,
   AppFollowupsRoute: AppFollowupsRoute,
+  AppReportsRoute: AppReportsRoute,
   AppTrackingRoute: AppTrackingRoute,
 }
 
